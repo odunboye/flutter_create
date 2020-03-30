@@ -1,4 +1,5 @@
 For creating custom flutter project from template
+A standalone solution to issue https://github.com/flutter/flutter/issues/15279
 
 ## Installation
 
