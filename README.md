@@ -1,22 +1,30 @@
-A library for Dart developers.
+For creating custom flutter project from template
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+## Installation
+
+If you want to use flutter_create on the command line,
+install it using `pub global activate`:
+
+```console
+> pub global activate flutter_create
+```
+
+To update flutter_create, use the same `pub global activate` command.
 
 ## Usage
 
-A simple usage example:
+flutter_create -a appname -u template_url
 
-```dart
-import 'package:flutter_create/flutter_create.dart';
+or
 
-main() {
-  var awesome = new Awesome();
-}
-```
+pub global run flutter_create -a appname -u template_url
+
+cd appname
+flutter pub get
+flutter run
 
 ## Features and bugs
 
 Please file feature requests and bugs at the [issue tracker][tracker].
 
-[tracker]: http://example.com/issues/replaceme
+[tracker]: https://github.com/odunboye/flutter_create/issues
