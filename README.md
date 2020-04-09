@@ -14,15 +14,20 @@ To update flutter_create, use the same `pub global activate` command.
 
 ## Usage
 
-flutter_create -a appname -u template_url
-
+```console
+> flutter_create -a appname -u template_url
+```
 or
 
+```console
 pub global run flutter_create -a appname -u template_url
+```
 
+```console
 cd appname
 flutter pub get
 flutter run
+```
 
 ## Features and bugs
 
