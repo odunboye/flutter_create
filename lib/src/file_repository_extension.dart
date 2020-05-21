@@ -10,74 +10,84 @@ extension MyFileRepositry on FileRepository {
     print('hello from extension');
   }
 
-  Future<File> myChangeIosAppName(String appName) async {
-    List contentLineByLine = await readFileAsLineByline(
-        filePath: p.join(
-      appName,
-      iosInfoPlistPath,
-    ));
-    for (var i = 0; i < contentLineByLine.length; i++) {
-      if (contentLineByLine[i].contains('<key>CFBundleName</key>')) {
-        contentLineByLine[i + 1] = '\t<string>${appName}</string>\r';
-        break;
+  Future<void> myChangeIosAppName(String appName) async {
+    try {
+      List contentLineByLine = await readFileAsLineByline(
+          filePath: p.join(
+            appName,
+            iosInfoPlistPath,
+          ));
+
+      for (var i = 0; i < contentLineByLine.length; i++) {
+        if (contentLineByLine[i].contains('<key>CFBundleName</key>')) {
+          contentLineByLine[i + 1] = '\t<string>${appName}</string>\r';
+          break;
+        }
       }
+      await writeFile(
+        filePath: p.join(
+          appName,
+          iosInfoPlistPath,
+        ),
+        content: contentLineByLine.join('\n'),
+      );
+      print('IOS appname changed successfully to : $appName');
+    } catch(e){
+      print('Error changing iOS appname - iOS folder possibly not there');
     }
-    var writtenFile = await writeFile(
-      filePath: p.join(
-        appName,
-        iosInfoPlistPath,
-      ),
-      content: contentLineByLine.join('\n'),
-    );
-    print('IOS appname changed successfully to : $appName');
-    return writtenFile;
   }
 
-  Future<File> myChangeMacOsAppName(String appName) async {
-    List contentLineByLine = await readFileAsLineByline(
-        filePath: p.join(
-      appName,
-      macosAppInfoxprojPath,
-    ));
-    for (var i = 0; i < contentLineByLine.length; i++) {
-      if (contentLineByLine[i].contains('PRODUCT_NAME')) {
-        contentLineByLine[i] = 'PRODUCT_NAME = $appName;';
-        break;
+  Future<void> myChangeMacOsAppName(String appName) async {
+    try {
+      List contentLineByLine = await readFileAsLineByline(
+          filePath: p.join(
+            appName,
+            macosAppInfoxprojPath,
+          ));
+      for (var i = 0; i < contentLineByLine.length; i++) {
+        if (contentLineByLine[i].contains('PRODUCT_NAME')) {
+          contentLineByLine[i] = 'PRODUCT_NAME = $appName;';
+          break;
+        }
       }
+      await writeFile(
+        filePath: p.join(
+          appName,
+          macosAppInfoxprojPath,
+        ),
+        content: contentLineByLine.join('\n'),
+      );
+      print('MacOS appname changed successfully to : $appName');
+    }catch(e){
+      print('Error changing macOS appname - MacOS folder possibly not there');
     }
-    var writtenFile = await writeFile(
-      filePath: p.join(
-        appName,
-        macosAppInfoxprojPath,
-      ),
-      content: contentLineByLine.join('\n'),
-    );
-    print('MacOS appname changed successfully to : $appName');
-    return writtenFile;
   }
 
-  Future<File> myChangeAndroidAppName(String appName) async {
-    List contentLineByLine = await readFileAsLineByline(
-      filePath: p.join(
-        appName,
-        androidManifestPath,
-      ),
-    );
-    for (var i = 0; i < contentLineByLine.length; i++) {
-      if (contentLineByLine[i].contains('android:label')) {
-        contentLineByLine[i] = '        android:label=\"${appName}\"';
-        break;
+  Future<void> myChangeAndroidAppName(String appName) async {
+    try {
+      List contentLineByLine = await readFileAsLineByline(
+        filePath: p.join(
+          appName,
+          androidManifestPath,
+        ),
+      );
+      for (var i = 0; i < contentLineByLine.length; i++) {
+        if (contentLineByLine[i].contains('android:label')) {
+          contentLineByLine[i] = '        android:label=\"${appName}\"';
+          break;
+        }
       }
+      await writeFile(
+        filePath: p.join(
+          appName,
+          androidManifestPath,
+        ),
+        content: contentLineByLine.join('\n'),
+      );
+      print('Android appname changed successfully to : $appName');
+    } catch (e){
+      print('Error changing Android appname - Anroid folder possibly not there');
     }
-    var writtenFile = await writeFile(
-      filePath: p.join(
-        appName,
-        androidManifestPath,
-      ),
-      content: contentLineByLine.join('\n'),
-    );
-    print('Android appname changed successfully to : $appName');
-    return writtenFile;
   }
 
   Future<File> changeImportName(
