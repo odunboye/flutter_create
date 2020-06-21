@@ -1,3 +1,8 @@
+## 1.0.3
+
+- fixed error -> platform specific folder not available
+
+
 ## 1.0.2
 
 - Clarify description II
