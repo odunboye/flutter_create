@@ -1,3 +1,8 @@
+## 1.0.4
+
+- Null safety
+
+
 ## 1.0.3
 
 - fixed error -> platform specific folder not available

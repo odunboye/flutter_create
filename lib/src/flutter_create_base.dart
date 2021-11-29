@@ -13,7 +13,7 @@ class FlutterCreate {
   bool get isAwesome => true;
   FileRepository fileRepository = FileRepository();
 
-  void create({List<String> args, String appName}) async {
+  void create({required List<String> args, required String appName}) async {
     args.insert(0, 'clone');
     await Process.run('git', args,
             workingDirectory: p.current, runInShell: true)
@@ -38,14 +38,15 @@ class FlutterCreate {
     });
   }
 
-  Future<String> getPubSpecName(String path) async {
+  Future<String?> getPubSpecName(String path) async {
     return fileRepository.getCurrentPubSpecName(path);
   }
 
   // change rename.changeAppName
-  Future changeAppName({String appName, Iterable<Platform> platforms}) async {
+  Future changeAppName(
+      {required String appName, Iterable<Platform>? platforms}) async {
     var oldName = await fileRepository.getCurrentPubSpecName(appName);
-    if (platforms.isEmpty || platforms.contains(Platform.ios)) {
+    if (platforms!.isEmpty || platforms.contains(Platform.ios)) {
       await fileRepository.myChangeIosAppName(appName);
     }
     if (platforms.isEmpty || platforms.contains(Platform.macOS)) {
@@ -54,6 +55,6 @@ class FlutterCreate {
     if (platforms.isEmpty || platforms.contains(Platform.android)) {
       await fileRepository.myChangeAndroidAppName(appName);
     }
-    changeFilesImports(appName, oldName);
+    changeFilesImports(appName, oldName!);
   }
 }

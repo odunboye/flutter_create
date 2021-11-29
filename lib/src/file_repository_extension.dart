@@ -12,14 +12,14 @@ extension MyFileRepositry on FileRepository {
 
   Future<void> myChangeIosAppName(String appName) async {
     try {
-      List contentLineByLine = await readFileAsLineByline(
+      List<String?>? contentLineByLine = await readFileAsLineByline(
           filePath: p.join(
-            appName,
-            iosInfoPlistPath,
-          ));
+        appName,
+        iosInfoPlistPath,
+      ));
 
-      for (var i = 0; i < contentLineByLine.length; i++) {
-        if (contentLineByLine[i].contains('<key>CFBundleName</key>')) {
+      for (var i = 0; i < contentLineByLine!.length; i++) {
+        if (contentLineByLine[i]!.contains('<key>CFBundleName</key>')) {
           contentLineByLine[i + 1] = '\t<string>${appName}</string>\r';
           break;
         }
@@ -32,20 +32,20 @@ extension MyFileRepositry on FileRepository {
         content: contentLineByLine.join('\n'),
       );
       print('IOS appname changed successfully to : $appName');
-    } catch(e){
+    } catch (e) {
       print('Error changing iOS appname - iOS folder possibly not there');
     }
   }
 
   Future<void> myChangeMacOsAppName(String appName) async {
     try {
-      List contentLineByLine = await readFileAsLineByline(
+      List<String?>? contentLineByLine = await readFileAsLineByline(
           filePath: p.join(
-            appName,
-            macosAppInfoxprojPath,
-          ));
-      for (var i = 0; i < contentLineByLine.length; i++) {
-        if (contentLineByLine[i].contains('PRODUCT_NAME')) {
+        appName,
+        macosAppInfoxprojPath,
+      ));
+      for (var i = 0; i < contentLineByLine!.length; i++) {
+        if (contentLineByLine[i]!.contains('PRODUCT_NAME')) {
           contentLineByLine[i] = 'PRODUCT_NAME = $appName;';
           break;
         }
@@ -58,21 +58,21 @@ extension MyFileRepositry on FileRepository {
         content: contentLineByLine.join('\n'),
       );
       print('MacOS appname changed successfully to : $appName');
-    }catch(e){
+    } catch (e) {
       print('Error changing macOS appname - MacOS folder possibly not there');
     }
   }
 
   Future<void> myChangeAndroidAppName(String appName) async {
     try {
-      List contentLineByLine = await readFileAsLineByline(
+      List<String?>? contentLineByLine = await readFileAsLineByline(
         filePath: p.join(
           appName,
           androidManifestPath,
         ),
       );
-      for (var i = 0; i < contentLineByLine.length; i++) {
-        if (contentLineByLine[i].contains('android:label')) {
+      for (var i = 0; i < contentLineByLine!.length; i++) {
+        if (contentLineByLine[i]!.contains('android:label')) {
           contentLineByLine[i] = '        android:label=\"${appName}\"';
           break;
         }
@@ -85,22 +85,23 @@ extension MyFileRepositry on FileRepository {
         content: contentLineByLine.join('\n'),
       );
       print('Android appname changed successfully to : $appName');
-    } catch (e){
-      print('Error changing Android appname - Anroid folder possibly not there');
+    } catch (e) {
+      print(
+          'Error changing Android appname - Anroid folder possibly not there');
     }
   }
 
   Future<File> changeImportName(
       String appName, String filePath, String oldAppName) async {
-    List contentLineByLine = await readFileAsLineByline(
+    List<String?>? contentLineByLine = await readFileAsLineByline(
       filePath: filePath,
     );
     var oldApp = oldAppName.trim();
     var newApp = appName.trim();
-    for (var i = 0; i < contentLineByLine.length; i++) {
-      if (contentLineByLine[i].indexOf(oldApp) > 0) {
+    for (var i = 0; i < contentLineByLine!.length; i++) {
+      if (contentLineByLine[i]!.indexOf(oldApp) > 0) {
         contentLineByLine[i] =
-            contentLineByLine[i].replaceFirst(oldApp, '$newApp');
+            contentLineByLine[i]!.replaceFirst(oldApp, '$newApp');
       }
     }
     var writtenFile = await writeFile(
@@ -111,16 +112,17 @@ extension MyFileRepositry on FileRepository {
     return writtenFile;
   }
 
-  // ignore: missing_return
-  Future<String> getCurrentPubSpecName(String dirPath) async {
-    List contentLineByLine = await readFileAsLineByline(
+  Future<String?> getCurrentPubSpecName(String dirPath) async {
+    String? ret;
+    List<String?>? contentLineByLine = await readFileAsLineByline(
       filePath: p.join(dirPath, pubspecPath),
     );
 
-    for (var i = 0; i < contentLineByLine.length; i++) {
-      if (contentLineByLine[i].contains('name:')) {
-        return (contentLineByLine[i] as String).split(':')[1];
+    for (var i = 0; i < contentLineByLine!.length; i++) {
+      if (contentLineByLine[i]!.contains('name:')) {
+        ret = (contentLineByLine[i] as String).split(':')[1];
       }
     }
+    return ret;
   }
 }
